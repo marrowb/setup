@@ -144,6 +144,27 @@ function display_packages {
     fi
 }
 
+function setup_gnome_and_apps() {
+    printf "\n\Installing additoinal apps...\n"
+
+    # First run system scripts as they may be prerequisites
+    for script in "${clone_path}/system"/*.sh; do
+        if [ -f "$script" ]; then
+            printf "\nRunning %s...\n" "${script}"
+            bash "$script"
+        fi
+    done
+
+    # Then run app installation scripts
+    for script in "${clone_path}/apps"/*.sh; do
+        if [ -f "$script" ]; then
+            printf "\nRunning %s...\n" "${script}"
+            bash "$script"
+        fi
+    done
+}
+
+
 if [ -z "${skip_system_packages}" ]; then
 cat << EOF
 
@@ -180,119 +201,51 @@ else
 fi
 
 ###############################################################################
-# Clone dotfiles
+# Setup Gnome and Install Applications
 ###############################################################################
-
-read -rep $'\nWhere do you want to clone these dotfiles to [~/dotfiles]? ' clone_path
-clone_path="${clone_path:-"${HOME}/dotfiles"}"
-
-# Ensure path doesn't exist.
-while [ -e "${clone_path}" ]; do
-    read -rep $'\nPath exists, try again? (y) ' y
-    case "${y}" in
-        [Yy]*)
-
-            break;;
-        *) echo "Please answer y or CTRL+c the script to abort everything";;
-    esac
-done
-
-echo
-
-# This is used to locally develop the install script.
-if [ "${DEBUG}" == "1" ]; then
-    cp -R "${PWD}/." "${clone_path}"
-else
-    git clone https://github.com/nickjj/dotfiles "${clone_path}"
-fi
-
-###############################################################################
-# Create initial directories
-###############################################################################
-
-mkdir -p "${HOME}/.local/bin" "${HOME}/.local/share" \
-    "${HOME}/.local/state" "${HOME}/.vim/spell"
-
-###############################################################################
-# Personalize git user
-###############################################################################
-
-cp "${clone_path}/.gitconfig.user" "${HOME}/.gitconfig.user"
-
-###############################################################################
-# Install Plug (Vim plugin manager)
-###############################################################################
-
-curl -fLo "${HOME}/.vim/autoload/plug.vim" --create-dirs \
-  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
-###############################################################################
-# Install tpm (tmux plugin manager)
-###############################################################################
-
-rm -rf "${HOME}/.tmux/plugins/tpm"
-git clone --depth 1 https://github.com/tmux-plugins/tpm "${HOME}/.tmux/plugins/tpm"
-
-###############################################################################
-# Install fzf (fuzzy finder on the terminal and used by a Vim plugin)
-###############################################################################
-
-rm -rf "${HOME}/.local/share/fzf"
-git clone --depth 1 https://github.com/junegunn/fzf.git "${HOME}/.local/share/fzf" \
-  && yes | "${HOME}/.local/share/fzf/install" --bin --no-update-rc
-
-###############################################################################
-# Carefully create symlinks
-###############################################################################
-
 cat << EOF
 
--------------------------------------------------------------------------------
+-------------------------------------------------------------------------
+Additional installation scripts in apps/ and system/ directories are
+available.
+These will install various applications and configure system settings.
 
-ln -fs "${clone_path}/.gitconfig" "${HOME}/.gitconfig"
-ln -fs "${clone_path}/.vimrc" "${HOME}/.vimrc"
-ln -fs "${clone_path}/.vim/spell/en.utf-8.add" "${HOME}/.vim/spell/en.utf-8.add"
-ln -fs "${clone_path}/.tmux.conf" "${HOME}/.tmux.conf"
-ln -fs "${clone_path}/.local/bin/"* "${HOME}/.local/bin/"
-
-# And if you happen to be using WSL:
-sudo ln -fs "${clone_path}/etc/wsl.conf" /etc/wsl.conf
-
--------------------------------------------------------------------------------
-
-A potentially dangerous action is about to happen. The above files are going to
-get forcefully symlinked.
-
-What does that mean?
-
-Any config files you have on the right hand side of the paths are going to get
-overwritten with the files that come with my dotfiles (left side).
-
-If you care about your original config files now would be the time to back
-them up. They will ALL be overwritten if you say yes to the prompt below.
+Would you like to run these additional installation scripts?
 EOF
 
 while true; do
-  read -rep $'\nReady to continue and apply the symlinks? (y) ' y
-  case "${y}" in
-      [Yy]*)
-
-          break;;
-      *) echo "Please answer y or CTRL+c the script to abort everything";;
-  esac
+    read -rp "Run additional installation scripts? (y/n) " yn
+    case "${yn}" in
+        [Yy]*)
+            run_additional_scripts
+            break;;
+        [Nn]*)
+            echo "Skipping additional installation scripts"
+            break;;
+        *) echo "Please answer y or n";;
+    esac
 done
 
-ln -fs "ln -fs "${clone_path}/.gitconfig" "${HOME}/.gitconfig" \
-    && ln -fs "${clone_path}/.vimrc" "${HOME}/.vimrc" \
-    && ln -fs "${clone_path}/.vim/spell/en.utf-8.add" "${HOME}/.vim/spell/en.utf-8.add" \
-    && ln -fs "${clone_path}/.tmux.conf" "${HOME}/.tmux.conf" \
-    && ln -fs "${clone_path}/.local/bin/"* "${HOME}/.local/bin/"
-
-if grep -qE "(Microsoft|microsoft|WSL)" /proc/version &>/dev/null; then
-    sudo ln -fs "${clone_path}/etc/wsl.conf" /etc/wsl.conf
-fi
 
 ###############################################################################
+# Clone Dotfiles and Setup Bare Repository
+###############################################################################
+# Taken from: https://www.atlassian.com/git/tutorials/dotfiles
+#
+# git clone --bare https://github.com/marrowb/dotfiles "$HOME"/.cfg
+# function config {
+#    /usr/bin/git --git-dir="$HOME"/.cfg/ --work-tree="$HOME" "$@"
+# }
+# mkdir -p .config-backup
+# config checkout
+# if [ $? = 0 ]; then
+#   echo "Checked out config.";
+#   else
+#     echo "Backing up pre-existing dot files.";
+#     config checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} .config-backup/{}
+# fi;
+# config checkout
+# config config status.showUntrackedFiles no
 
 ###############################################################################
 # Install tmux plugins
