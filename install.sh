@@ -86,13 +86,19 @@ function display_packages {
 }
 
 function setup_gnome_and_apps() {
-    printf "\n\Installing additoinal apps...\n"
+    printf "\n\Installing additional apps...\n"
+    
+    # Array to store failed installations
+    failed_scripts=()
 
     # First run system scripts as they may be prerequisites
     for script in "./system"/*.sh; do
         if [ -f "$script" ]; then
             printf "\nRunning %s...\n" "${script}"
-            bash "$script"
+            if ! bash "$script"; then
+                failed_scripts+=("$script")
+                printf "\nWarning: %s failed to execute properly\n" "${script}"
+            fi
         fi
     done
 
@@ -100,9 +106,21 @@ function setup_gnome_and_apps() {
     for script in "./apps"/*.sh; do
         if [ -f "$script" ]; then
             printf "\nRunning %s...\n" "${script}"
-            bash "$script"
+            if ! bash "$script"; then
+                failed_scripts+=("$script")
+                printf "\nWarning: %s failed to execute properly\n" "${script}"
+            fi
         fi
     done
+
+    # Report failed installations if any
+    if [ ${#failed_scripts[@]} -ne 0 ]; then
+        printf "\n\nThe following scripts failed to execute properly:\n"
+        printf '%s\n' "${failed_scripts[@]}"
+        printf "\nPlease check the above scripts and try running them manually.\n"
+    else
+        printf "\n\nAll installation scripts completed successfully!\n"
+    fi
 }
 
 function run_nvm_install()  {
