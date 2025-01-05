@@ -5,5 +5,3 @@ curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/"${ubuntu_release}".list | s
 sudo apt-get update
 sudo apt-get install tailscale
 
-sudo tailscale up
-
