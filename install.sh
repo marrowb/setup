@@ -179,12 +179,17 @@ while true; do
             # Create backup directory
             mkdir -p .config-backup
 
-            # Attempt to checkout dotfiles, backup existing ones if necessary
-            if ! config checkout; then
-                echo "Backing up pre-existing dot files.";
+            # Initial checkout attempt
+            config checkout
+            if [ $? = 0 ]; then
+                echo "Checked out config."
+            else
+                echo "Backing up pre-existing dot files."
                 config checkout 2>&1 | grep -E "\s+\." | awk {'print $1'} | xargs -I{} mv {} .config-backup/{}
-                config checkout
             fi
+
+            # Second checkout attempt after potential backups
+            config checkout
 
             # Hide untracked files in dotfiles status
             config config status.showUntrackedFiles no
