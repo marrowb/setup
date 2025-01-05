@@ -6,5 +6,5 @@ sudo dpkg -i ./protonvpn-stable-release_1.0.6_all.deb && sudo apt update
 sudo apt install proton-vpn-gnome-desktop
 
 # Proton Pass
-curl -fsSL https://proton.me/download/PassDesktop/linux/x64/ProtonPass.deb
-sudo dpkg -i ProtonPass.deb
+curl -fsSL https://proton.me/download/PassDesktop/linux/x64/ProtonPass.deb -o ./ProtonPass.deb
+sudo dpkg -i ./ProtonPass.deb
