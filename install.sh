@@ -181,7 +181,7 @@ while true; do
 
             # Initial checkout attempt
             config checkout
-            if [ $? = 0 ]; then
+            if config checkout; then
                 echo "Checked out config."
             else
                 echo "Backing up pre-existing dot files."
@@ -251,7 +251,6 @@ while true; do
         *) echo "Please answer y or n";;
     esac
 done
-
 
 
 printf "\n\nInstalling tmux plugin manager...\n"
