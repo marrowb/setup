@@ -297,9 +297,9 @@ tmux source "${HOME}/.tmux.conf"
 # Install fzf (fuzzy finder on the terminal and used by a Vim plugin)
 ###############################################################################
 
-rm -rf "${HOME}/.local/share/fzf"
-git clone --depth 1 https://github.com/junegunn/fzf.git "${HOME}/.local/share/fzf" \
-  && yes | "${HOME}/.local/share/fzf/install" --bin --no-update-rc
+rm -rf "${HOME}/.fzf"
+git clone --depth 1 https://github.com/junegunn/fzf.git "${HOME}/.fzf" \
+  && yes | "${HOME}/.fzf/install" 
 
 ###############################################################################
 # Install Vim-Plug and plugins
