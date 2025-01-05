@@ -105,6 +105,14 @@ function setup_gnome_and_apps() {
     done
 }
 
+function run_npv_install()  {
+    printf "\n\Installing npv...\n"
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+    export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")" [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+    source "${HOME}"/.bashrc
+    nvim install node
+}
+
 
 if [ -z "${skip_system_packages}" ]; then
 cat << EOF
@@ -140,6 +148,29 @@ EOF
 else
     echo "System package installation was skipped!"
 fi
+
+###############################################################################
+# Install Node Version Manager
+###############################################################################
+cat << EOF
+
+-------------------------------------------------------------------------
+Would you like to install the Node Version Manager, NodeJs, and Nvm?
+-------------------------------------------------------------------------
+EOF
+
+while true; do
+    read -rp "Run NPV installation scripts? (y/n) " yn
+    case "${yn}" in
+        [Yy]*)
+            run_npv_install
+            break;;
+        [Nn]*)
+            echo "Not installing npv"
+            break;;
+        *) echo "Please answer y or n";;
+    esac
+done
 
 ###############################################################################
 # Setup Gnome and Install Applications
