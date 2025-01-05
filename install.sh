@@ -105,8 +105,8 @@ function setup_gnome_and_apps() {
     done
 }
 
-function run_npv_install()  {
-    printf "\n\Installing npv...\n"
+function run_nvm_install()  {
+    printf "\n\Installing nvm...\n"
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
     source "$HOME"/.bashrc 
     nvm install node
@@ -209,13 +209,13 @@ Would you like to install the Node Version Manager, NodeJs, and Nvm?
 EOF
 
 while true; do
-    read -rp "Run NPV installation scripts? (y/n) " yn
+    read -rp "Run nvm installation scripts? (y/n) " yn
     case "${yn}" in
         [Yy]*)
-            run_npv_install
+            run_nvm_install
             break;;
         [Nn]*)
-            echo "Not installing npv"
+            echo "Not installing nvm"
             break;;
         *) echo "Please answer y or n";;
     esac
