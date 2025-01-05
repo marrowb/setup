@@ -294,6 +294,14 @@ tmux source "${HOME}/.tmux.conf"
 "${HOME}/.tmux/plugins/tpm/bin/install_plugins"
 
 ###############################################################################
+# Install fzf (fuzzy finder on the terminal and used by a Vim plugin)
+###############################################################################
+
+rm -rf "${HOME}/.local/share/fzf"
+git clone --depth 1 https://github.com/junegunn/fzf.git "${HOME}/.local/share/fzf" \
+  && yes | "${HOME}/.local/share/fzf/install" --bin --no-update-rc
+
+###############################################################################
 # Install Vim-Plug and plugins
 ###############################################################################
 
