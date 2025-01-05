@@ -269,8 +269,12 @@ done
 # config config status.showUntrackedFiles no
 
 ###############################################################################
-# Install tmux plugins
+# Install tmux plugin manager and plugins
 ###############################################################################
+
+printf "\n\nInstalling tmux plugin manager...\n"
+rm -rf "${HOME}/.tmux/plugins/tpm"
+git clone --depth 1 https://github.com/tmux-plugins/tpm "${HOME}/.tmux/plugins/tpm"
 
 printf "\n\nInstalling tmux plugins...\n"
 
@@ -278,8 +282,12 @@ export TMUX_PLUGIN_MANAGER_PATH="${HOME}/.tmux/plugins"
 "${HOME}/.tmux/plugins/tpm/bin/install_plugins"
 
 ###############################################################################
-# Install Vim plugins
+# Install Vim-Plug and plugins
 ###############################################################################
+
+printf "\n\nInstalling Vim-Plug...\n"
+curl -fLo "${HOME}/.vim/autoload/plug.vim" --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 printf "\n\nInstalling Vim plugins...\n"
 
