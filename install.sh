@@ -89,7 +89,7 @@ function setup_gnome_and_apps() {
     printf "\n\Installing additoinal apps...\n"
 
     # First run system scripts as they may be prerequisites
-    for script in "${clone_path}/system"/*.sh; do
+    for script in "./system"/*.sh; do
         if [ -f "$script" ]; then
             printf "\nRunning %s...\n" "${script}"
             bash "$script"
@@ -97,7 +97,7 @@ function setup_gnome_and_apps() {
     done
 
     # Then run app installation scripts
-    for script in "${clone_path}/apps"/*.sh; do
+    for script in "./apps"/*.sh; do
         if [ -f "$script" ]; then
             printf "\nRunning %s...\n" "${script}"
             bash "$script"
@@ -158,7 +158,7 @@ while true; do
     read -rp "Run additional installation scripts? (y/n) " yn
     case "${yn}" in
         [Yy]*)
-            run_additional_scripts
+            setup_gnome_and_apps
             break;;
         [Nn]*)
             echo "Skipping additional installation scripts"
