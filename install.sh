@@ -108,7 +108,8 @@ function setup_gnome_and_apps() {
 function run_nvm_install()  {
     printf "\n\Installing nvm...\n"
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
-    source "$HOME"/.bashrc 
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
     nvm install node
 }
 
