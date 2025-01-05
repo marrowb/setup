@@ -149,22 +149,50 @@ else
 fi
 
 ###############################################################################
-# Clone Dotfiles
+# Create initial directories and Setup Dotfiles
 ###############################################################################
-cat << EOF
 
--------------------------------------------------------------------------
-Would you like to clone Brandon's dotfiles?
--------------------------------------------------------------------------
-EOF
+printf "\n\nCreating directory structure...\n"
+
+# Create necessary directories
+mkdir -p "${HOME}/.config" \
+    "${HOME}/.local/bin" \
+    "${HOME}/.local/share" \
+    "${HOME}/.local/state" \
+    "${HOME}/.vim/spell"
+
+printf "\n\nSetting up dotfiles as bare repository...\n"
+
+# Prompt user for dotfiles setup
 while true; do
-    read -rp "Clone brandon's dotfiles? (y/n) " yn
+    read -rp "Would you like to setup your dotfiles? (y/n) " yn
     case "${yn}" in
         [Yy]*)
-            git clone https://github.com/marrowb/dotfiles
+            # Clone bare repository
+            git clone --bare https://github.com/marrowb/dotfiles "$HOME"/.cfg
+
+            # Define config function for managing dotfiles
+            function config {
+               /usr/bin/git --git-dir="$HOME"/.cfg/ --work-tree="$HOME" "$@"
+            }
+
+            # Create backup directory
+            mkdir -p .config-backup
+
+            # Attempt to checkout dotfiles, backup existing ones if necessary
+            if ! config checkout; then
+                echo "Backing up pre-existing dot files.";
+                config checkout 2>&1 | grep -E "\s+\." | awk {'print $1'} | xargs -I{} mv {} .config-backup/{}
+                config checkout
+            fi
+
+            # Hide untracked files in dotfiles status
+            config config status.showUntrackedFiles no
+            
+            echo "Dotfiles setup complete!"
             break;;
         [Nn]*)
-            echo "Not installing dotfiles"
+            echo "Skipping dotfiles setup"
             break;;
         *) echo "Please answer y or n";;
     esac
