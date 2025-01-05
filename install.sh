@@ -108,9 +108,20 @@ function setup_gnome_and_apps() {
 function run_nvm_install()  {
     printf "\n\Installing nvm...\n"
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+    
+    # Load nvm immediately for use in this script
     export NVM_DIR="$HOME/.nvm"
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-    nvm install node
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+    
+    # Install latest LTS version of Node
+    nvm install --lts
+    nvm use --lts
+    
+    # Verify installations
+    printf "\nNode version: "
+    node --version
+    printf "NPM version: "
+    npm --version
 }
 
 
