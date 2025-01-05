@@ -289,6 +289,8 @@ git clone --depth 1 https://github.com/tmux-plugins/tpm "${HOME}/.tmux/plugins/t
 printf "\n\nInstalling tmux plugins...\n"
 
 export TMUX_PLUGIN_MANAGER_PATH="${HOME}/.tmux/plugins"
+mkdir -p "${TMUX_PLUGIN_MANAGER_PATH}"
+tmux source "${HOME}/.tmux.conf"
 "${HOME}/.tmux/plugins/tpm/bin/install_plugins"
 
 ###############################################################################
