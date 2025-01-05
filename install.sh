@@ -253,29 +253,6 @@ while true; do
 done
 
 
-###############################################################################
-# Clone Dotfiles and Setup Bare Repository
-###############################################################################
-# Taken from: https://www.atlassian.com/git/tutorials/dotfiles
-#
-# git clone --bare https://github.com/marrowb/dotfiles "$HOME"/.cfg
-# function config {
-#    /usr/bin/git --git-dir="$HOME"/.cfg/ --work-tree="$HOME" "$@"
-# }
-# mkdir -p .config-backup
-# config checkout
-# if [ $? = 0 ]; then
-#   echo "Checked out config.";
-#   else
-#     echo "Backing up pre-existing dot files.";
-#     config checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} .config-backup/{}
-# fi;
-# config checkout
-# config config status.showUntrackedFiles no
-
-###############################################################################
-# Install tmux plugin manager and plugins
-###############################################################################
 
 printf "\n\nInstalling tmux plugin manager...\n"
 rm -rf "${HOME}/.tmux/plugins/tpm"
