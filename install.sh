@@ -147,7 +147,11 @@ function run_nvm_install()  {
 function run_pipx_install() {
     printf "\n\Installing python packages...\n"
     for pkg in ${pip_packages}; do
-        pipx install "$pkg" --system-site-packages
+        {
+            pipx install "$pkg" --system-site-packages
+        } || {
+            pip install "$pkg"
+        }
     done
 }
 
