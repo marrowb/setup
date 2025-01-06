@@ -59,3 +59,7 @@ gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/or
 gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/ command 'firefox'
 gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/ binding '<Shift><Super>F'
 
+cat << EOF
+In POP OS, some of these commands will need to be manually removed for example. The switch focus to window up, right, left, down commands will need to be manually removed for the above tile left and tile right to work correctly do to conflicting shortcuts.
+EOF
+
