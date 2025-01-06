@@ -6,7 +6,9 @@ skip_system_packages="${1}"
 
 os_type="$(uname -s)"
 
-apt_packages="curl git iproute2 python3-pip ripgrep tmux vim-gtk wl-clipboard vlc flameshot gnome-tweaks build-essential pkg-config autoconf bison clang rustc libssl-dev libreadline-dev zlib1g-dev libyaml-dev libreadline-dev libncurses5-dev libffi-dev libgdbm-dev libjemalloc2 libvips imagemagick libmagickwand-dev mupdf mupdf-tools gir1.2-gda-5.0 gir1.2-gsound-1.0 gir1.2-gtop-2.0 gir1.2-clutter-1.0 redis-tools sqlite3 libsqlite3-0 libpq-dev postgresql-common software-properties-common apt-transport-https"
+apt_packages="curl git iproute2 python3-pip ripgrep tmux vim-gtk wl-clipboard vlc flameshot gnome-tweaks build-essential pkg-config autoconf bison clang rustc libssl-dev libreadline-dev zlib1g-dev libyaml-dev libreadline-dev libncurses5-dev libffi-dev libgdbm-dev libjemalloc2 libvips imagemagick libmagickwand-dev mupdf mupdf-tools gir1.2-gda-5.0 gir1.2-gsound-1.0 gir1.2-gtop-2.0 gir1.2-clutter-1.0 redis-tools sqlite3 libsqlite3-0 libpq-dev postgresql-common software-properties-common apt-transport-https gnome-shell-extension-manager pipx"
+
+pip_packages="llm ipython pandas numpy scikit-learn datasette matplotlib click gnome-extensions-cli"
 
 apt_packages_optional="gnupg htop inotify-tools jq pass pwgen rsync shellcheck unzip"
 
@@ -142,6 +144,11 @@ function run_nvm_install()  {
     npm --version
 }
 
+function run_pipx_install() {
+    printf "\n\Installing python packages...\n"
+    pipx install ${pip_packages} --system-site-packages
+}
+
 
 if [ -z "${skip_system_packages}" ]; then
 cat << EOF
@@ -250,6 +257,29 @@ while true; do
             break;;
         [Nn]*)
             echo "Not installing nvm"
+            break;;
+        *) echo "Please answer y or n";;
+    esac
+done
+
+###############################################################################
+# Install Pip Packages
+###############################################################################
+cat << EOF
+
+-------------------------------------------------------------------------
+Would you like to install the pip packages?
+-------------------------------------------------------------------------
+EOF
+
+while true; do
+    read -rp "Run pip install script? (y/n) " yn
+    case "${yn}" in
+        [Yy]*)
+            run_pipx_install
+            break;;
+        [Nn]*)
+            echo "Python packages"
             break;;
         *) echo "Please answer y or n";;
     esac
