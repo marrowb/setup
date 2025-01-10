@@ -6,7 +6,7 @@ skip_system_packages="${1}"
 
 os_type="$(uname -s)"
 
-apt_packages="curl git iproute2 python3-pip ripgrep tmux vim-gtk wl-clipboard vlc flameshot gnome-tweaks build-essential pkg-config autoconf bison clang rustc libssl-dev libreadline-dev zlib1g-dev libyaml-dev libreadline-dev libncurses5-dev libffi-dev libgdbm-dev libjemalloc2 libvips imagemagick libmagickwand-dev mupdf mupdf-tools gir1.2-gda-5.0 gir1.2-gsound-1.0 gir1.2-gtop-2.0 gir1.2-clutter-1.0 redis-tools sqlite3 libsqlite3-0 libpq-dev postgresql-common software-properties-common apt-transport-https gnome-shell-extension-manager pipx"
+apt_packages="curl git iproute2 python3-pip ripgrep tmux vim-gtk wl-clipboard vlc flameshot gnome-tweaks build-essential pkg-config autoconf bison clang rustc libssl-dev libreadline-dev zlib1g-dev libyaml-dev libreadline-dev libncurses5-dev libffi-dev libgdbm-dev libjemalloc2 libvips imagemagick libmagickwand-dev mupdf mupdf-tools gir1.2-gda-5.0 gir1.2-gsound-1.0 gir1.2-gtop-2.0 gir1.2-clutter-1.0 redis-tools sqlite3 libsqlite3-0 libpq-dev postgresql-common software-properties-common apt-transport-https gnome-shell-extension-manager pipx tmuxp"
 
 pip_packages="llm ipython pandas numpy scikit-learn datasette matplotlib click gnome-extensions-cli"
 
