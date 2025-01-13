@@ -1,3 +1,6 @@
+# Set Caps lock to super
+gsettings set org.gnome.desktop.input-sources xkb-options "['caps:super']"
+
 # Dock
 gsettings set org.gnome.shell.extensions.dash-to-dock extend-height false
 gsettings set org.gnome.shell.extensions.dash-to-dock manualhide true
@@ -61,5 +64,9 @@ gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/or
 
 cat << EOF
 In POP OS, some of these commands will need to be manually removed for example. The switch focus to window up, right, left, down commands will need to be manually removed for the above tile left and tile right to work correctly do to conflicting shortcuts.
+
+View Split on Left Super + H
+View Split on Right Super + L
+
 EOF
 
